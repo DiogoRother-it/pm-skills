@@ -24,10 +24,11 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões en
 Antes de tudo, confirme o cenário — porque o começo muda tudo:
 
 - **Projeto novo do zero** (sem repo/identidade ainda) → segue nesta skill.
-- **Projeto já existe, quero uma tela nova** → não é aqui: vá pro `px-request` (ou `px-epic` se for várias telas).
+- **Produto que já existe e vou reformar** (redesign, aplicar o DS, auditar as telas atuais) → não é aqui: vá pro `px-audit`, a porta brownfield. Ele levanta o AS-IS, diagnostica a usabilidade e monta o backlog de redesign antes de qualquer tela nova.
+- **Projeto já existe, quero uma tela nova** (identidade já definida) → não é aqui: vá pro `px-request` (ou `px-epic` se for várias telas).
 - **Tenho só uma ideia/problema vago, nem sei o tamanho** → o próprio `px-start` te leva pro `px-intake` no Passo 3.
 
-Se não é projeto novo, encaminhe e encerre — não force o fluxo de setup.
+Se não é projeto novo, encaminhe e encerre — não force o fluxo de setup. Em especial: **produto existente que precisa de redesign nunca deve cair no fluxo greenfield** — mande pro `px-audit`.
 
 ## Passo 1 — Terreno pronto? (delega pra `px-setup`)
 
@@ -76,8 +77,14 @@ Antes de encerrar, repita em 3–4 linhas: *"Então: projeto **X**, alvo **Y**, 
 ## Relação com o fluxo
 
 ```
-px-setup (terreno)  →  px-start  →  px-intake  →  px-kickoff  →  px-epic  →  px-request  →  px-story  →  handoff → dev
-                       ^ você está aqui (a porta de entrada de todo projeto novo)
+projeto novo (greenfield):
+  px-setup (terreno)  →  px-start  →  px-intake  →  px-kickoff  →  px-epic  →  px-request  →  px-story  →  handoff → dev
+                         ^ você está aqui (a porta de entrada de todo projeto novo)
+
+produto existente (brownfield):
+  px-audit  →  [px-kickoff se faltar identidade]  →  px-epic  →  px-request  →  px-story  →  handoff → dev
 ```
 
+> `px-start` (greenfield) e `px-audit` (brownfield) são o **par de portas de entrada**: um começa do zero, o outro começa do que já existe. Se cair aqui um produto que já existe pra reformar, despache pro `px-audit`.
+>
 > A `px-setup` prepara o terreno técnico (sandbox/clone/branch) e faz a entrega pro repo do dev; o `px-start` orienta e despacha a idealização. Se o terreno ainda não existe, passe pela `px-setup` antes.
