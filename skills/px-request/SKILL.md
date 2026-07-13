@@ -100,6 +100,10 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada para decisões e
 3. Pergunte qual seguir (`AskUserQuestion`, recomendada marcada).
 4. **Gate "Outro":** se nada serve, proponha "Outro", marque **⚠️ REQUER VALIDAÇÃO UX/PX** e **pare** — não avança sem aprovação explícita do líder. Nunca invente componente em silêncio.
 
+**Alertas obrigatórios ao ancorar a variação (dispare quando a família for a do caso):**
+- **Tabela → alerte sobre rolagem horizontal.** Ao recomendar qualquer variação de Table, avise o UX: *uma tabela idealmente não tem scroll horizontal*. Se as colunas levantadas no Bloco 4 sugerem que não cabem, a **sugestão é sempre reduzir colunas** — priorizar as essenciais e realocar o secundário (Table com Expansão, tooltip, ou Drawer de detalhe ao clicar na linha), nunca ativar `overflow-x`. Registre no artefato quais colunas são essenciais × secundárias. Ver Table família em `ds-components_v4.md`.
+- **Modal/Drawer/Popover → alerte sobre empilhamento.** Ao recomendar um overlay, avise que **não se empilha overlay**: proibido Modal sobre Modal, Popover sobre Modal e Popover sobre Drawer — nesses casos é *switch* (fecha um, abre o outro). A **única** sobreposição aceita é **Drawer disparando Modal/Dialog** (ex: formulário no Drawer → confirmação). Confirmação destrutiva dentro de um Modal resolve-se **inline**, não com Dialog por cima. Se o fluxo desta tela abrir um overlay a partir de outro, registre qual é o padrão (switch × Drawer→Modal). Ver Overlay/Surface em `ds-components_v4.md`.
+
 ## BLOCO 7 — Estados e suas mensagens (o que acontece quando...)
 **Decidir:** o comportamento e o texto de CADA estado. Este bloco é onde as entregas costumam furar.
 **Por que importa:** "esqueci o estado vazio/erro" é o buraco nº1 de handoff. Aqui a gente fecha um por um.
@@ -133,7 +137,7 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada para decisões e
 **Decidir:** comportamento nos breakpoints e mínimos de acessibilidade.
 **Por que importa:** a validação do dev (Playwright, 99% de fidelidade) cobre todos os breakpoints — precisa estar especificado, não improvisado.
 **Perguntar:**
-- "No mobile (390–480), o que colapsa, esconde ou vira menu?" — *ex: colunas secundárias somem; ações viram kebab.* Breakpoints do DS: Mobile 390–480 / Tablet 481–1024 / Desktop 1025–1440 / Widescreen >1440.
+- "No mobile (390–480), o que colapsa, esconde ou vira menu?" — *ex: colunas secundárias somem; ações viram kebab.* Breakpoints do DS: Mobile 390–480 / Tablet 481–1024 / Desktop 1025–1440 / Widescreen >1440. **Tabela nunca vira scroll horizontal no mobile** — colunas secundárias colapsam/somem (regra do Bloco 6).
 - "Precisa funcionar por teclado? Tem algo que dependa só de cor?" — *default: sim ao teclado; status sempre com rótulo + cor, nunca só cor.*
 - "Modo escuro é necessário?" — *default: seguir o UI KIT do projeto.*
 

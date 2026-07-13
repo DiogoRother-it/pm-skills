@@ -837,6 +837,13 @@ Organiza dados estruturados em linhas e colunas. Quatro variações por complexi
 
 **Estrutura compartilhada:** Cabeçalho (colunas) + Linhas (dados) + Células + Estados (loading, empty, erro)
 
+> **Regra — sem rolagem horizontal (inegociável).** Uma tabela **não deve** ter scroll horizontal. Se as colunas não cabem na largura disponível, a saída **nunca** é ativar `overflow-x`; é **reduzir colunas**, nesta ordem de preferência:
+> 1. **Priorizar** — mantenha só as colunas essenciais pra tarefa; corte o secundário.
+> 2. **Realocar** — mova o secundário pra **Table com Expansão** (detalhe na linha), tooltip, ou um **Drawer de detalhe** ao clicar na linha.
+> 3. **Repensar a densidade** — se ainda não cabe, a tela provavelmente pede outra abordagem (cards, agrupamento), não uma tabela mais larga.
+>
+> No mobile isso é ainda mais crítico: colunas secundárias colapsam/somem (ver responsividade), nunca viram scroll lateral. Exceção real: **Data Grid** com colunas configuráveis pelo usuário pode ter scroll como último recurso — mas o default segue sendo reduzir colunas.
+
 **Qual usar?**
 
 ```
@@ -870,6 +877,13 @@ Alto nível de interação. Suporta edição inline, drag and drop, filtros avan
 ## Overlay / Surface
 
 Componentes que aparecem **sobre o conteúdo principal**, mantendo ou interrompendo o contexto da tela.
+
+> **Regra — um overlay por vez, nunca empilhar (inegociável).** Overlay não sobe em cima de overlay. Quando um novo precisa aparecer, faça **switch** (fecha o atual e abre o próximo no lugar), nunca cascata:
+> - **Modal sobre Modal → proibido.** Sempre switch.
+> - **Popover sobre Modal / Popover sobre Drawer → proibido.** O Popover é leve e contextual; não dispara overlay pesado por cima — faz switch.
+> - **Drawer → Modal/Dialog → permitido.** Esta é a **única** sobreposição aceita: um Drawer pode disparar um Modal (ex: formulário no Drawer → confirmação). O inverso (Modal abrindo Drawer) não.
+>
+> Motivo: pilha de overlays confunde o foco, o Escape e o "onde eu estou". Switch mantém um único contexto ativo. Confirmação destrutiva dentro de um Modal → resolver **inline** no próprio Modal, não abrir um Dialog por cima.
 
 **Qual usar?**
 
@@ -919,6 +933,7 @@ Painel lateral que desliza sobre a interface para tarefas secundárias, sem nave
 
 **Regras:**
 - Apenas um Drawer ativo por vez
+- **Pode disparar um Modal/Dialog** por cima (única sobreposição aceita — ex: formulário no Drawer → confirmação); nunca outro Drawer nem um Popover
 - Fechamento não deve perder dados sem aviso (quando há formulário)
 - Não substituir navegação principal
 
@@ -940,7 +955,8 @@ Bloqueia a interface para focar o usuário em uma tarefa específica.
 
 **Regras:**
 - Deve ter ação clara e fechar explícito
-- Evitar modais em cascata
+- **Nunca Modal sobre Modal** — sempre switch (ver "um overlay por vez" no topo de Overlay/Surface). Confirmação dentro do Modal → inline, não Dialog por cima.
+- Pode ser disparado por um Drawer; nunca abre um Drawer por cima de si.
 - Conteúdo longo demais → considerar Drawer ou página
 
 ---
@@ -975,7 +991,9 @@ Conteúdo contextual com interação, exibido próximo ao elemento de origem.
 
 **Comportamento:** Abre próximo ao elemento, fecha ao clicar fora ou pressionar Escape.
 
-**Regra:** não deve bloquear fluxo principal.
+**Regras:**
+- Não deve bloquear fluxo principal.
+- **Nunca abre Modal nem Drawer por cima** — se a ação precisa de um overlay pesado, faça switch (fecha o Popover e abre o overlay no lugar).
 
 ---
 

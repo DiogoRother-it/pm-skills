@@ -23,6 +23,8 @@ Em conflito: o CSS real prevalece para valor visual; os documentos prevalecem pa
 - Radius sempre via `--radius`; cor sempre via token (nunca hex no `className`).
 - Sem travessão e sem caixa alta total em texto de interface.
 - Apenas 1 botão primário por tela/contexto.
+- **Tabela sem rolagem horizontal** — se as colunas não cabem, reduzir/realocar colunas (priorizar, expansão, drawer de detalhe), nunca ativar `overflow-x`. Ver Table família em `ds-components_v4.md`.
+- **Um overlay por vez, nunca empilhar** — proibido Modal sobre Modal, Popover sobre Modal, Popover sobre Drawer; sempre *switch* (fecha um, abre o outro). Única sobreposição aceita: **Drawer pode disparar Modal/Dialog**. Ver Overlay/Surface em `ds-components_v4.md`.
 - Componente sem equivalente no shadcn/Radix: compor com primitivas e documentar (exceção: Data Grid avançado via TanStack Table).
 
 ## Protocolo de Interação UX (obrigatório antes de qualquer UI)

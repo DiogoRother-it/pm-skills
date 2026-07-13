@@ -120,7 +120,7 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões en
 **Fazer, tela a tela (registrar na tabela do template):**
 - Liste os **componentes atuais** de cada tela. Para cada um:
   - **Variação canônica do DS** correspondente (via árvore "Qual usar?" do `ds-components_v4.md`). *ex: tabela caseira → Data Table.*
-  - **Divergência de anatomia** observada: fora do grid de 8px, cor em hex, radius solto, estrutura própria, estado faltando. *ex: botão com radius 6px e hex hardcoded.*
+  - **Divergência de anatomia** observada: fora do grid de 8px, cor em hex, radius solto, estrutura própria, estado faltando. *ex: botão com radius 6px e hex hardcoded.* Marque também as duas divergências de comportamento mais comuns: **tabela com rolagem horizontal** (deveria reduzir colunas) e **overlay empilhado** (modal sobre modal, popover abrindo modal/drawer — deveria ser switch; só Drawer→Modal é aceito). Ver `ds-components_v4.md`.
   - **Ação:** `AskUserQuestion` — *Reestilizar pro DS (Recomendado se o comportamento serve) · Trocar pela variação do DS · Compor com primitivas · Outro ⚠️ REQUER VALIDAÇÃO UX/PX*.
 - **Gate "Outro":** componente sem equivalente no catálogo → marque **⚠️ REQUER VALIDAÇÃO UX/PX** e **pare** nesse item; não avança sem aprovação do líder.
 
