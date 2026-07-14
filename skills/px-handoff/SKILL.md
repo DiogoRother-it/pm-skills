@@ -1,6 +1,6 @@
 ---
 name: px-handoff
-description: Skill de FECHAMENTO da cadeia PX. Monta o pacote de handoff pro dev a partir das histórias já ready — consolida o que está sendo entregue, fecha a Definition of Done (Playwright + 99% de fidelidade), amarra os flows/personas do ux-flows/ux-persona, carimba a qual sprint/semana a entrega se refere e atualiza o PX-PROGRESS. Não desenha tela e NÃO roda git: delega a entrega mecânica (branch ux/<funcionalidade> + Merge Request) pra px-setup Passo 4. Use ao fechar um lote de telas prontas pra levar pro dev — "fechar o handoff", "preparar a entrega pro dev", "empacotar pro desenvolvimento", "gerar a definition of done", "qual sprint essa entrega entra", "finalizar o fluxo".
+description: Skill de FECHAMENTO da cadeia PX. Monta o pacote de handoff pro dev a partir das histórias já ready — consolida o que está sendo entregue, fecha a Definition of Done (Playwright + 99% de fidelidade), amarra os flows/personas do ux-flows/ux-persona, carimba a qual sprint/semana a entrega se refere, atualiza o PX-PROGRESS e executa a entrega git completa (branch ux/<funcionalidade> + push + Merge Request). Não desenha tela. Use ao fechar um lote de telas prontas pra levar pro dev — "fechar o handoff", "preparar a entrega pro dev", "empacotar pro desenvolvimento", "gerar a definition of done", "qual sprint essa entrega entra", "finalizar o fluxo".
 compatibility: claude-code
 metadata:
   audience: px-ux
@@ -13,7 +13,7 @@ Esta skill **fecha** o ciclo de uma funcionalidade/fluxo: pega as histórias que
 
 **Contrato de entrega:** o dev recebe **código funcional rodando** (branch `ux/<funcionalidade>`) + **histórias de usuário** (critérios de aceite + BDD). Não é uma spec pra reinterpretar — é o trabalho implementado. O papel do dev é **nivelamento de stack**: adaptar a estrutura do sandbox ao projeto real. Não é reimplementação.
 
-Ela **não desenha tela** (isso é `px-request`/`px-story`) e **não roda git** — a mecânica de branch/Merge Request é da **`px-setup` Passo 3** (o protocolo proíbe duplicar comando de git entre skills). O `px-handoff` monta o documento e **despacha a entrega pra `px-setup`**.
+Ela **não desenha tela** (isso é `px-request`/`px-story`). Ela fecha o ciclo completo: monta o pacote **e** executa a mecânica de git (branch + push + Merge Request) — sem delegar pra outra skill.
 
 **Público desta skill:** o líder UX/PX. Seja direto: monte o pacote a partir do que já existe, pergunte só o que muda a decisão, confirme e feche.
 
@@ -85,12 +85,18 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões en
 **Fazer, nesta ordem:**
 1. Montar o `planning/<funcionalidade>/handoff.md` (template) e apresentar o resumo ao líder.
 2. **Atualizar o `PX-PROGRESS.md`**: marcar as histórias entregues como feitas, preencher o campo `Sprint`, e apontar a próxima leva (ou "cadeia concluída") em *Próximo passo*.
-3. **Confirmar que o `px-preview` existe** — o arquivo HTML navegável gerado anteriormente vai **anexado ao MR** como referência visual obrigatória. Sem ele, não despacha.
-4. **Despachar a entrega git pra `px-setup` Passo 3** — não rode git aqui. Passe pra ela: a funcionalidade (`ux/<funcionalidade>`), o título do MR com `[Sprint NN]`, o `handoff.md` como corpo do MR, e o caminho do HTML do `px-preview` para anexar.
+3. **Confirmar que o `px-preview` existe** — o arquivo HTML navegável gerado anteriormente vai **anexado ao MR** como referência visual obrigatória. Sem ele, não avança.
+4. **Executar a entrega git** (a skill roda; o UX só confirma):
+   - Pedir a **URL do repo do dev** (se ainda não tiver) e clonar: `git clone <url> <pasta-dev>`.
+   - Criar a branch de entrega: `git checkout -b ux/<funcionalidade>`.
+   - **Copiar o trabalho do sandbox** pro repo do dev: telas (`src/pages/` ou `src/app/`) → pasta equivalente do projeto; `planning/` → `planning/`; `src/index.css` como referência de tokens (o dev migra pro formato da stack). **Não levar:** `node_modules`, `.git`, `src/components/ui/` (já existem no repo do dev via `@centralit/kit`).
+   - Mostrar ao líder o resumo dos arquivos que vão entrar — confirmar antes de commitar.
+   - Commitar e empurrar: `git add .` → `git commit -m "ux(<funcionalidade>): ..."` → `git push -u origin ux/<funcionalidade>`.
+   - Gerar o **link do Merge Request** (`ux/<funcionalidade>` → `main`). Título: `[Sprint NN] ux(<funcionalidade>): <resumo>`; corpo: o `handoff.md`; navegável do `px-preview` anexado.
 
 ## Eco final
 
-Antes de despachar, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: **N** histórias (código funcional + BDD), **Sprint NN · semana ISO**, DoD fechada, flows amarrados, **M** fronteiras de integração, navegável `px-preview` gerado. O dev recebe a branch `ux/<funcionalidade>` + o HTML de referência e faz o nivelamento de stack. Vou atualizar o checkpoint e mandar a entrega pra `px-setup` — confirma?"*. Só então feche.
+Antes de executar a entrega, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: **N** histórias (código funcional + BDD), **Sprint NN · semana ISO**, DoD fechada, flows amarrados, **M** fronteiras de integração, navegável `px-preview` gerado. O dev recebe a branch `ux/<funcionalidade>` + o HTML de referência e faz o nivelamento de stack. Vou atualizar o checkpoint e rodar a entrega git (branch + push + MR) — confirma?"*. Só então feche.
 
 ## Onde salvar
 
@@ -99,17 +105,19 @@ Antes de despachar, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: *
 ## Regras
 
 - **Não desenha tela.** Consolida o que `px-request`/`px-story` já produziram.
-- **Não roda git.** Branch e Merge Request são da `px-setup` Passo 3; o `px-handoff` despacha pra ela.
 - **Não inventa DoD nem boundary.** Puxa da spec/histórias; o que faltar vira Pergunta em aberto, não suposição.
 - **Sprint é carimbo de entrega**, não de branch. Vai no MR e no `PX-PROGRESS`, nunca no nome da branch.
+- **Nunca `git` na mão pro UX.** A skill executa os comandos; o UX só confirma.
+- **Nunca commit na `main`.** Sempre branch `ux/<funcionalidade>` + Merge Request.
 
 ## Relação com o fluxo
 
 ```
-px-request  →  px-story  →  px-handoff  →  px-setup (Passo 3: branch ux/<funcionalidade> + MR)  →  dev (nivela stack)
-                            ^ você está aqui (fecha a cadeia: código + histórias + DoD + sprint + flows)
+px-request  →  px-story  →  px-handoff  →  dev (nivela stack)
+                            ^ você está aqui
+                            (fecha a cadeia: pacote + git + branch ux/<funcionalidade> + MR)
 ```
 
-> `px-handoff` é a entrega **pro dev** no nível de pacote (o que/como/quando + histórias); a `px-setup` Passo 3 é a mecânica de git dessa entrega; a `px-preview` gera o navegável que vai **obrigatoriamente anexado ao MR** — referência visual que elimina o "dev no escuro". As três são complementares e obrigatórias no fechamento.
+> `px-handoff` fecha o ciclo completo: consolida o pacote (o que/como/quando + histórias + DoD) **e** executa a entrega git (branch + push + MR). A `px-preview` gera o navegável que vai **obrigatoriamente anexado ao MR** — referência visual que elimina o "dev no escuro". A `px-setup` só monta o sandbox no início; não participa da entrega.
 >
 > O dev **não reimplementa** — ele nivela. O código funcional do sandbox é o entregável; a adaptação à estrutura do projeto real é o nivelamento de stack, responsabilidade exclusiva do dev.
