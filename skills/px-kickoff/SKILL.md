@@ -33,11 +33,12 @@ Conduza em pt-BR.
 
 ## Passo 0 — Bootstrap (onde a skill roda) — obrigatório antes de tudo
 
-**Por que importa:** o kickoff **escreve tokens no `src/index.css`** do produto. Se rodar dentro do boilerplate, rebranda o próprio boilerplate — erro grave.
+**Por que importa:** o kickoff **escreve tokens no `src/index.css`** do sandbox e gera o UI KIT que toda a cadeia vai consumir.
 **Fazer, antes de qualquer pergunta:**
-- Confirmar que estamos no **projeto consumidor** (o repo do produto), não no boilerplate coringa.
-- Se o projeto ainda não existe, **criar a partir do boilerplate** (scaffold Vite+shadcn) — ou, se o alvo é só um protótipo, seguir pelo `agile-proto` (que tem stack própria e não toca no `index.css`).
-- **Nunca** aplicar tokens de identidade de um produto no repositório do boilerplate. Artefatos de planejamento (`planning/<projeto>/`) podem morar junto; tokens reais, só no produto.
+- Confirmar que estamos no **sandbox do boilerplate** do projeto (criado pelo `px-setup`). O PX sempre trabalha no boilerplate — o `src/index.css` aqui é o ambiente correto para a identidade.
+- Se o sandbox ainda não existe, encaminhar pra `px-setup` antes de continuar.
+- Se o alvo é só um protótipo descartável, seguir pelo `px-proto` (stack própria, não toca no `index.css` do boilerplate).
+- Na entrega, o dev migra os tokens de identidade pro formato da stack do projeto real — isso é nivelamento de stack, não responsabilidade do PX.
 
 ## Modo "proponho e valido" (contra o interrogatório)
 
@@ -142,9 +143,9 @@ Quando há artefato, os blocos B2–B9 abaixo viram **confirmação do que foi e
 > Ao fechar, **atualize o checkpoint** `planning/<projeto>/PX-PROGRESS.md` (ver "Checkpoint de progresso" no `px-protocol.md`): marque o kickoff como feito (públicos + UI KIT aplicado ao `index.css`), registre o alvo de build e o próximo passo, e sincronize Premissas → *Decisões travadas* e pendências → *Perguntas em aberto*.
 
 Com a Definition of Ready completa, escolher o próximo passo pelo tamanho:
-- **Sistema/várias telas (iniciativa):** rodar `agile-epic` pra decompor em backlog de telas; depois `px-request` em cada uma.
+- **Sistema/várias telas (iniciativa):** rodar `px-epic` pra decompor em backlog de telas; depois `px-request` em cada uma.
 - **Uma tela só:** ir direto pro `px-request`.
-Também decidir aqui o **alvo de build** (protótipo via `agile-proto` × app React do produto) — ver `CLAUDE.md` › Fluxo de skills. O `px-request` consome os públicos e o UI KIT definidos aqui.
+Também decidir aqui o **alvo de build** (protótipo via `px-proto` × app React do produto) — ver `CLAUDE.md` › Fluxo de skills. O `px-request` consome os públicos e o UI KIT definidos aqui.
 
 ## Relação com o fluxo
 ```

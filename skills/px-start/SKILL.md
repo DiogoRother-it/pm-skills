@@ -36,9 +36,9 @@ Se não é projeto novo, encaminhe e encerre — não force o fluxo de setup. Em
 **Por que importa:** a cadeia PX escreve artefatos em `planning/<iniciativa>/` e a identidade em `src/index.css`. Sem o esqueleto, os próximos passos não têm onde gravar. Mas a **mecânica de git/scaffold é da `px-setup`** — o `px-start` não repete comando de repositório.
 **Fazer:**
 - Confirme a raiz do projeto (o repo). Se ambíguo, pergunte antes de escrever qualquer coisa.
-- **Se o terreno ainda não está preparado** (sem sandbox nem repo do dev clonado) → encaminhe pra **`px-setup`**, que monta o sandbox a partir do boilerplate ou clona o repo do dev e cria a branch de trabalho. **A branch é por funcionalidade/fluxo** (`ux/<funcionalidade>`), não por projeto — um projeto tem várias. Num **repo real**, a branch nasce **desde o início** (assim que a funcionalidade tem nome); no **sandbox**, só na entrega. Quem executa isso é a `px-setup` — o `px-start` não repete comando de git.
-- **Alvo de build** (`AskUserQuestion`): *App React do produto a partir do boilerplate (Recomendado)* × *Protótipo HTML descartável (via `agile-proto`, stack própria)*. Muda onde a identidade é aplicada e o que "pronto" significa. Essa decisão é de idealização e fica aqui.
-- Se for protótipo, aponte pro `agile-proto` como manual técnico — a decisão já vem registrada.
+- **Se o terreno ainda não está preparado** (sem sandbox) → encaminhe pra **`px-setup`**, que monta o sandbox a partir do boilerplate. O PX **sempre** trabalha no boilerplate — nunca no repo do dev. **A branch `ux/<funcionalidade>`** só nasce na entrega (quando o `px-handoff` despacha pra `px-setup` Passo 3) — nunca no início do trabalho. Quem executa isso é a `px-setup` — o `px-start` não repete comando de git.
+- **Alvo de build** (`AskUserQuestion`): *App React do produto a partir do boilerplate (Recomendado)* × *Protótipo HTML descartável (via `px-proto`, stack própria)*. Muda onde a identidade é aplicada e o que "pronto" significa. O boilerplate é o ambiente padrão; o `px-proto` é a exceção pra casos exploratórios muito iniciais. Essa decisão é de idealização e fica aqui.
+- Se for protótipo, aponte pro `px-proto` como manual técnico — a decisão já vem registrada.
 
 ## Passo 2 — Orientar (a cadeia PX em 3 linhas)
 
@@ -101,4 +101,4 @@ produto existente (brownfield):
 
 > `px-start` (greenfield) e `px-audit` (brownfield) são o **par de portas de entrada**: um começa do zero, o outro começa do que já existe. Se cair aqui um produto que já existe pra reformar, despache pro `px-audit`.
 >
-> A `px-setup` prepara o terreno técnico (sandbox/clone/branch) e faz a entrega pro repo do dev; o `px-start` orienta e despacha a idealização. Se o terreno ainda não existe, passe pela `px-setup` antes.
+> A `px-setup` prepara o terreno técnico (sandbox no boilerplate) e faz a entrega pro repo do dev (Passo 3, na entrega); o `px-start` orienta e despacha a idealização. PX sempre trabalha no boilerplate — o repo do dev é só destino de entrega.
