@@ -1,6 +1,6 @@
 ---
 name: px-setup
-description: Prepara o TERRENO técnico de um projeto (a parte de git/repositório) para o líder UX, sem ele decorar comando. Decide o cenário — projeto novo × continuação, e se os devs já criaram o repositório — e executa o setup certo: monta o sandbox a partir do boilerplate, ou clona o repo do dev e cria a branch ux/. Também executa a ENTREGA — migrar o trabalho do sandbox pro repo do dev (identidade + telas + planning) numa branch ux/ com Merge Request. Não idealiza nem desenha tela: prepara e entrega. Use ao começar o terreno de um projeto ou ao levar o sandbox pro repo do dev — "começar um projeto", "montar o ambiente", "os devs liberaram o repo", "levar meu trabalho pro repo do dev", "criar a branch ux".
+description: Prepara o TERRENO técnico de um projeto (a parte de git/repositório) para o líder UX, sem ele decorar comando. PX SEMPRE trabalha no boilerplate — nunca no repo do dev. Monta o sandbox a partir do boilerplate para o PX idealizar. Também executa a ENTREGA — quando o dev libera o repo, cria a branch ux/ no repo do dev, empurra o trabalho do sandbox e abre o Merge Request para o dev fazer o nivelamento de stack. Não idealiza nem desenha tela: prepara e entrega. Use ao começar o terreno de um projeto ou ao levar o sandbox pro repo do dev — "começar um projeto", "montar o ambiente", "os devs liberaram o repo", "levar meu trabalho pro repo do dev", "criar a branch ux".
 compatibility: claude-code
 metadata:
   audience: px-ux
@@ -9,7 +9,9 @@ metadata:
 
 # px-setup — prepara o terreno e faz a entrega
 
-Esta skill cuida da **parte mecânica de repositório** pra o líder UX não precisar decorar comando de `git`. Ela **pergunta o cenário**, **executa o setup certo** e, no fim do ciclo, **leva o trabalho pro repo do dev**. Ela não idealiza nem desenha tela — quem faz isso é a cadeia a partir de `px-start`.
+Esta skill cuida da **parte mecânica de repositório** pra o líder UX não precisar decorar comando de `git`. Ela **pergunta o cenário**, **monta o sandbox** e, no fim do ciclo, **empurra o trabalho pro repo do dev**. Ela não idealiza nem desenha tela — quem faz isso é a cadeia a partir de `px-start`.
+
+**Regra fundamental:** o PX **sempre** trabalha no boilerplate. O repo do dev é destino de entrega, nunca ambiente de trabalho.
 
 **Público desta skill:** o líder UX/PX. Seja direto: pergunte só o que muda a decisão, execute o resto.
 
@@ -19,28 +21,25 @@ Contexto inicial via slash: `$ARGUMENTS` (nome/ideia do projeto ou "entrega"). S
 
 ## Prompting
 
-Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões enumeráveis (novo × continuação, repo existe?, é entrega?); livre pra nome do projeto e URL do repo. Toda pergunta traz o porquê + default recomendado; eco ao final antes de executar.
+Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões enumeráveis (novo × continuação, é entrega?); livre pra nome do projeto e URL do repo. Toda pergunta traz o porquê + default recomendado; eco ao final antes de executar.
 
 ## Passo 0 — Qual é o cenário?
 
 Pergunte (`AskUserQuestion`), porque o caminho muda tudo:
 
-- **Projeto novo** → Passo 1.
-- **Continuação de algo que já existe** (o repo do dev já está com você) → Passo 3 (entrar na branch e retomar).
-- **Hora de entregar** (levar o sandbox pro repo do dev) → Passo 4.
+- **Projeto novo** → Passo 1 (montar o sandbox).
+- **Continuação** (sandbox já existe, retomando o trabalho) → confirme a pasta do sandbox e encaminhe de volta pra cadeia PX.
+- **Hora de entregar** (o dev liberou o repo e o trabalho está pronto) → Passo 3.
 
-## Passo 1 — Projeto novo: os devs já criaram o repositório?
+## Passo 1 — Projeto novo: montar o sandbox
 
-Pergunte (`AskUserQuestion`), porque define de onde o terreno vem:
+O PX sempre começa no boilerplate — independentemente de o repo do dev existir ou não. O sandbox é o **único ambiente de trabalho do PX**.
 
-- **Ainda não há repo do dev** → **montar o sandbox** (Passo 2). O UX começa a idealizar já, sem esperar o dev.
-- **O repo do dev já existe** → **clonar o repo do dev** e criar a branch `ux/<funcionalidade>` (Passo 3). O UX idealiza direto na arquitetura real.
+> **Branch por funcionalidade/fluxo, não por projeto.** Um projeto tem várias funcionalidades → várias branches `ux/*`. O slug `<funcionalidade>` é o **mesmo** que a cadeia usa em `planning/<iniciativa>/` e no `PX-PROGRESS` — um slug só governa planning, checkpoint e branch. Se a funcionalidade ainda não tem nome (discovery não rodou), ela nasce assim que o `px-intake` decide o slug; não invente nome provisório.
 
-> **Branch por funcionalidade/fluxo, não por projeto.** Um projeto tem várias funcionalidades → várias branches `ux/*`. O slug `<funcionalidade>` é o **mesmo** que a cadeia usa em `planning/<iniciativa>/` e no `PX-PROGRESS` — um slug só governa planning, checkpoint e branch. Se a funcionalidade ainda não tem nome (discovery não rodou), a branch nasce assim que o `px-intake` decide o slug; não invente nome provisório.
+## Passo 2 — Montar o sandbox
 
-## Passo 2 — Montar o sandbox (projeto novo, sem repo do dev)
-
-**O que é:** uma cópia local do boilerplate — já traz a biblioteca de componentes e os tokens. Rascunho padronizado, temporário e descartável.
+**O que é:** uma cópia local do boilerplate — já traz a biblioteca de componentes e os tokens. É o ateliê do PX: padronizado, isolado e independente do repo do dev.
 
 **Executar (a skill roda; não peça pro UX digitar):**
 1. Pedir um nome pra pasta (livre; ex: a ideia do projeto).
@@ -52,35 +51,26 @@ Pergunte (`AskUserQuestion`), porque define de onde o terreno vem:
 
 **Pré-requisito:** a pessoa precisa ter acesso ao repo privado `centralit-boilerplate` (login normal do GitHub; sem token).
 
-## Passo 3 — Trabalhar no repo do dev (novo com repo, ou continuação)
+## Passo 3 — Entrega: empurrar o sandbox pro repo do dev
 
-**O que é:** o repositório real do dev, com a arquitetura definitiva (monorepo).
+Roda quando o dev libera o repo e o PX já tem o trabalho pronto no sandbox. Normalmente **despachada pela `px-handoff`**, que traz o pacote pronto: funcionalidade, título do MR com `[Sprint NN]` e o `handoff.md` como corpo.
 
-**Executar:**
-1. Se ainda não clonou: pedir a **URL do repo do dev** e clonar.
-2. Criar/entrar na branch de UX: `git checkout -b ux/<funcionalidade>` (recém-clonado já parte da `main` atualizada; se o repo já estava na máquina, `git checkout main && git pull` antes).
-3. **Nunca trabalhar na `main`.** Todo trabalho de UX vive numa branch `ux/<funcionalidade>`.
-4. Encaminhar pra idealização (`/px-start`) se ainda não passou por ela.
+**O que o PX entrega:** código funcional rodando — não uma spec pra ser reinterpretada. O dev recebe as telas implementadas e faz o **nivelamento de stack** (adapta a estrutura de pastas e rotas pro projeto dele). Não é reimplementação.
 
-> **Repo real = branch desde o início.** Diferente do sandbox (onde a branch só nasce na entrega, Passo 4), num repo real a branch `ux/<funcionalidade>` é criada **já aqui**, assim que a funcionalidade tem nome — todo o trabalho da cadeia já cai nela. Se o líder chegou com a funcionalidade clara, crie agora; se veio vago, o `px-intake` nomeia o slug e a branch é criada nesse ponto (esta skill é reinvocada pra isso).
-
-## Passo 4 — Entrega: levar o sandbox pro repo do dev
-
-Roda quando o dev libera o repo e o UX já tem trabalho no sandbox. Normalmente é **despachada pela `px-handoff`** (a skill de fechamento), que já traz o pacote pronto: a funcionalidade, o título do MR com `[Sprint NN]` e o `handoff.md` como corpo. Também pode ser chamada direto pra uma entrega simples.
-
-**Pré-condição (confirme antes de migrar):** o repo do dev já precisa ter o `packages/components` **semeado com o padrão Central IT** (o time de dev faz isso ao criar o repo, via registry `@centralit/kit`). Se o repo chegou "cru", sem os componentes, as telas migradas vão referenciar componentes que não existem e quebram. Se for o caso, pare e sinalize o time de dev antes de seguir.
+**Pré-condição:** confirme que o repo do dev já tem o `packages/components` semeado com o padrão Central IT (via registry `@centralit/kit`). Se chegou "cru", pause e sinalize o time de dev antes de seguir.
 
 **Executar:**
-1. Garantir o repo do dev clonado e a branch `ux/<funcionalidade>` criada (Passo 3).
-2. **Migrar cada coisa pro lugar certo** (não copiar o sandbox inteiro):
-   - **Identidade** (`src/index.css` do sandbox) → ajustar os valores dos tokens em `packages/components/src/styles.css` (o formato de token é diferente: `--primary` vira `@theme --color-primary`).
-   - **Telas** → `apps/<front>/src/routes/`, adaptadas à estrutura de rotas do projeto.
-   - **`planning/`** → `planning/` (vai quase direto).
-   - **Não levar:** componentes (`src/components/ui`), `node_modules`, `.git` — já existem no repo do dev.
-3. Commitar e empurrar a branch: `git add .` → `git commit -m "ux(<funcionalidade>): ..."` → `git push -u origin ux/<funcionalidade>`.
-4. Gerar o **link do Merge Request** no GitLab (`ux/<funcionalidade>` → `main`) pra o UX abrir; o dev revisa e integra. **Título do MR com o sprint** quando vier da `px-handoff`: `[Sprint NN] ux(<funcionalidade>): <resumo>`; corpo = o `handoff.md`.
+1. Pedir a **URL do repo do dev** (se ainda não tiver) e clonar: `git clone <url> <pasta-dev>`.
+2. Criar a branch de entrega: `git checkout -b ux/<funcionalidade>`.
+3. **Copiar o trabalho do sandbox** pro repo do dev:
+   - **Telas** (`src/pages/` ou `src/app/`) → colar na pasta equivalente do projeto do dev.
+   - **`planning/`** → `planning/` (vai direto).
+   - **`src/index.css`** (tokens de identidade) → entregar como referência; o dev migra pro formato da stack dele.
+   - **Não levar:** `node_modules`, `.git`, componentes de `src/components/ui/` (já existem no repo do dev via `@centralit/kit`).
+4. Commitar e empurrar: `git add .` → `git commit -m "ux(<funcionalidade>): ..."` → `git push -u origin ux/<funcionalidade>`.
+5. Gerar o **link do Merge Request** (`ux/<funcionalidade>` → `main`) pra o UX abrir. Título com sprint quando vier da `px-handoff`: `[Sprint NN] ux(<funcionalidade>): <resumo>`; corpo = o `handoff.md`.
 
-**Antes do commit, mostre ao UX o que vai entrar** (resumo dos arquivos migrados) pra ele conferir — a colocação envolve julgamento e pode variar por projeto.
+**Antes do commit, mostre ao UX o resumo dos arquivos que vão entrar** — confirme antes de executar.
 
 ## Eco final
 
@@ -91,17 +81,20 @@ Antes de executar, repita em 3–4 linhas: *"Então: cenário **X**, vou fazer *
 - **Não idealiza nem desenha.** Prepara terreno e entrega; a idealização é a partir de `px-start`.
 - **Nunca `git` na mão pro UX.** A skill executa; o UX só confirma.
 - **Nunca commit na `main`.** Sempre branch `ux/<funcionalidade>` + Merge Request.
-- **Sandbox é descartável.** Depois de migrado e mergeado, pode ser apagado.
+- **Sandbox é o ateliê, não o produto.** Depois de entregue e mergeado, pode ser apagado.
+- **O dev faz o nivelamento de stack.** PX entrega código funcional; a adaptação à estrutura do projeto real é responsabilidade do dev.
 - **Sem token no fluxo de sandbox.** O acesso ao repo privado é o login normal do GitHub.
 
 ## Relação com o fluxo
 
 ```
 px-setup (terreno / entrega)
-   ├─ monta sandbox  ──►  /px-start  →  px-intake  →  px-kickoff  →  px-request  →  px-story  →  px-handoff
-   └─ entrega (Passo 4)  ◄── px-handoff despacha → branch ux/<funcionalidade> + Merge Request [Sprint NN] → dev
+   ├─ monta sandbox (boilerplate)  ──►  px-start  →  px-intake  →  px-kickoff  →  px-request  →  px-story  →  px-handoff
+   └─ entrega (Passo 3)  ◄── px-handoff despacha → branch ux/<funcionalidade> + MR [Sprint NN] → dev (nivela a stack)
 ```
 
-> Integração: o Passo 1 do `px-start` delega o terreno técnico pra cá. Ele só confirma a raiz e o alvo de build e encaminha pra `px-setup` quando o terreno ainda não existe. Sem duplicação de comando de git entre as duas.
+> Integração: o `px-start` delega o terreno técnico pra cá. Sem duplicação de comando de git entre as duas.
 >
-> Fechamento: a `px-handoff` monta o pacote de entrega (DoD + sprint + flows) e **despacha a mecânica de git pra cá** (Passo 4). O `px-handoff` não roda git; a `px-setup` não monta pacote — cada uma na sua metade.
+> Fechamento: a `px-handoff` monta o pacote de entrega (DoD + sprint + flows + histórias) e **despacha a mecânica de git pra cá** (Passo 3). O `px-handoff` não roda git; a `px-setup` não monta pacote — cada uma na sua metade.
+>
+> O dev recebe código funcional rodando numa branch `ux/`. O nivelamento de stack (adaptar estrutura de pastas, rotas e formato de tokens pro projeto real) é responsabilidade exclusiva do dev.

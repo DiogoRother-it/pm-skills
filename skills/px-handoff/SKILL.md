@@ -9,9 +9,11 @@ metadata:
 
 # px-handoff — o fechamento da cadeia (entrega pro dev)
 
-Esta skill **fecha** o ciclo de uma funcionalidade/fluxo: pega as histórias que já estão *ready* (saíram do `px-story`) e monta o **pacote de handoff** que o dev vai consumir — o que construir, como saber que ficou pronto (Definition of Done), como validar (flows/personas + Playwright) e **em qual sprint** isso entra. É o passo que faltava entre "telas prontas" e "dev integra".
+Esta skill **fecha** o ciclo de uma funcionalidade/fluxo: pega as histórias que já estão *ready* (saíram do `px-story`) e monta o **pacote de handoff** que o dev vai consumir — o que está sendo entregue (código funcional + histórias), como saber que ficou pronto (Definition of Done), como validar (flows/personas + Playwright) e **em qual sprint** isso entra.
 
-Ela **não desenha tela** (isso é `px-request`/`px-story`) e **não roda git** — a mecânica de branch/Merge Request é da **`px-setup` Passo 4** (o protocolo proíbe duplicar comando de git entre skills). O `px-handoff` monta o documento e **despacha a entrega pra `px-setup`**.
+**Contrato de entrega:** o dev recebe **código funcional rodando** (branch `ux/<funcionalidade>`) + **histórias de usuário** (critérios de aceite + BDD). Não é uma spec pra reinterpretar — é o trabalho implementado. O papel do dev é **nivelamento de stack**: adaptar a estrutura do sandbox ao projeto real. Não é reimplementação.
+
+Ela **não desenha tela** (isso é `px-request`/`px-story`) e **não roda git** — a mecânica de branch/Merge Request é da **`px-setup` Passo 3** (o protocolo proíbe duplicar comando de git entre skills). O `px-handoff` monta o documento e **despacha a entrega pra `px-setup`**.
 
 **Público desta skill:** o líder UX/PX. Seja direto: monte o pacote a partir do que já existe, pergunte só o que muda a decisão, confirme e feche.
 
@@ -55,11 +57,13 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões en
 **Decidir:** o critério objetivo de "entregue" pra esta leva.
 **Por que importa:** sem DoD explícito, "pronto" é opinião. O protocolo fixa a régua; aqui você a instancia.
 **Fazer — montar a DoD (padrão da casa, ver `px-protocol.md` › Handoff → dev):**
+- [ ] Nivelamento de stack concluído: telas do sandbox integradas na estrutura do projeto real, sem perda de comportamento ou estado.
 - [ ] Todas as telas implementadas seguindo o UI KIT (tokens, sem hex/radius solto, grid de 8px).
 - [ ] Todos os estados de cada tela (default/loading/empty/error/disabled/read-only/hover/foco/responsivo).
 - [ ] Todos os breakpoints (Mobile/Tablet/Desktop/Widescreen).
 - [ ] Validação visual via **Playwright**, **meta de 99% de fidelidade**, evidências anexadas ao MR.
 - [ ] Os cenários **BDD** de cada história passam (feliz + vazio + erro + permissão + 1 regra de negócio).
+- [ ] Histórias de usuário (`px-story`) referenciadas no MR — são o contrato de aceite.
 - Adicione DoD específico da funcionalidade se houver (ex: integração X mockada e marcada).
 
 ## BLOCO 4 — Validação pelo usuário (flows + personas)
@@ -80,11 +84,11 @@ Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões en
 **Fazer, nesta ordem:**
 1. Montar o `planning/<funcionalidade>/handoff.md` (template) e apresentar o resumo ao líder.
 2. **Atualizar o `PX-PROGRESS.md`**: marcar as histórias entregues como feitas, preencher o campo `Sprint`, e apontar a próxima leva (ou "cadeia concluída") em *Próximo passo*.
-3. **Despachar a entrega git pra `px-setup` Passo 4** — não rode git aqui. Passe pra ela: a funcionalidade (`ux/<funcionalidade>`), o título do MR com `[Sprint NN]`, e o `handoff.md` como corpo do MR. Se o terreno é sandbox, é a `px-setup` que migra pro repo do dev; se já é repo real, a branch `ux/<funcionalidade>` já existe (criada no início — ver `px-setup`).
+3. **Despachar a entrega git pra `px-setup` Passo 3** — não rode git aqui. Passe pra ela: a funcionalidade (`ux/<funcionalidade>`), o título do MR com `[Sprint NN]`, e o `handoff.md` como corpo do MR. A `px-setup` empurra o trabalho do sandbox pro repo do dev e abre o MR.
 
 ## Eco final
 
-Antes de despachar, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: **N** histórias, **Sprint NN · semana ISO**, DoD fechada, flows amarrados, **M** fronteiras de integração. Vou atualizar o checkpoint e mandar a entrega pra `px-setup` — confirma?"*. Só então feche.
+Antes de despachar, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: **N** histórias (código funcional + BDD), **Sprint NN · semana ISO**, DoD fechada, flows amarrados, **M** fronteiras de integração. O dev recebe a branch `ux/<funcionalidade>` e faz o nivelamento de stack. Vou atualizar o checkpoint e mandar a entrega pra `px-setup` — confirma?"*. Só então feche.
 
 ## Onde salvar
 
@@ -93,15 +97,17 @@ Antes de despachar, repita em 4–6 linhas: *"Handoff da funcionalidade **X**: *
 ## Regras
 
 - **Não desenha tela.** Consolida o que `px-request`/`px-story` já produziram.
-- **Não roda git.** Branch e Merge Request são da `px-setup` Passo 4; o `px-handoff` despacha pra ela.
+- **Não roda git.** Branch e Merge Request são da `px-setup` Passo 3; o `px-handoff` despacha pra ela.
 - **Não inventa DoD nem boundary.** Puxa da spec/histórias; o que faltar vira Pergunta em aberto, não suposição.
 - **Sprint é carimbo de entrega**, não de branch. Vai no MR e no `PX-PROGRESS`, nunca no nome da branch.
 
 ## Relação com o fluxo
 
 ```
-px-request  →  px-story  →  px-handoff  →  px-setup (Passo 4: branch ux/<funcionalidade> + Merge Request)  →  dev
-                            ^ você está aqui (fecha a cadeia: DoD + sprint + flows, e despacha a entrega)
+px-request  →  px-story  →  px-handoff  →  px-setup (Passo 3: branch ux/<funcionalidade> + MR)  →  dev (nivela stack)
+                            ^ você está aqui (fecha a cadeia: código + histórias + DoD + sprint + flows)
 ```
 
-> `px-handoff` é a entrega **pro dev** no nível de pacote (o que/como/quando); a `px-setup` Passo 4 é a mecânica de git dessa entrega; a `px-preview` é a entrega **pro PO** (HTML standalone). As três são complementares.
+> `px-handoff` é a entrega **pro dev** no nível de pacote (o que/como/quando + histórias); a `px-setup` Passo 3 é a mecânica de git dessa entrega; a `px-preview` é a entrega **pro PO** (HTML standalone). As três são complementares.
+>
+> O dev **não reimplementa** — ele nivela. O código funcional do sandbox é o entregável; a adaptação à estrutura do projeto real é o nivelamento de stack, responsabilidade exclusiva do dev.
