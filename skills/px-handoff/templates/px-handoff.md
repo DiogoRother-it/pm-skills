@@ -55,4 +55,4 @@ Então <resultado esperado>
 - `<pendência>` — dono: `<nome>` · aguardando: `<o que falta para resolver>`
 - (ou) Nenhuma.
 
-<!-- Salvar em: ux/semana-<NN>/handoff.md -->
+<!-- Salvar em: handoff-ux/semana-<NN>/handoff.md -->
