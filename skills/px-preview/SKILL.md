@@ -1,34 +1,53 @@
 ---
 name: px-preview
-description: Empacota a idealização (as telas prontas) num ÚNICO arquivo HTML autocontido para o líder UX enviar ao PO revisar, sem o PO precisar de conta, login, servidor ou instalar nada — ele abre por duplo clique no navegador. Detecta a stack (Vite SPA puro × framework SSR como TanStack Start) e aplica o caminho certo: no sandbox padrão (Vite) só inlina tudo com vite-plugin-singlefile; num app SSR, gera um build client-only paralelo que ignora o SSR e usa hash history. Sempre valida no navegador antes de entregar e, opcionalmente, publica como Artifact do claude.ai para devolver um LINK. Não idealiza nem desenha tela. Use ao fechar um ciclo de telas e querer mandar pro PO: "gerar o HTML pro PO", "empacotar o protótipo", "mandar a idealização pro PO ver", "gerar arquivo único", "quero um link pro PO revisar", "standalone pro product owner".
+description: Opcional. Avalia o projeto e decide o melhor formato para compartilhar as telas construídas com PO e stakeholders que não têm acesso ao localhost — HTML standalone (duplo clique), deploy em Netlify/Vercel, ou Artifact do claude.ai. Detecta a stack e executa o caminho correto. Quem constrói sempre usa o localhost (Vite); o px-preview é só sobre como levar o que foi construído para fora. Use quando o líder disser: "quero mandar pro PO ver", "gerar o HTML pro PO", "subir numa URL", "link pro product owner", "empacotar pra revisão".
 compatibility: claude-code
 metadata:
   audience: px-ux
   workflow: delivery
 ---
 
-# px-preview — empacota a idealização num HTML pro PO revisar
+# px-preview — decide como compartilhar as telas com quem não tem localhost
 
-Esta skill pega as telas que o UX já idealizou e as transforma em **um único arquivo `.html` autocontido**, para enviar ao PO. O PO **não precisa de conta no Claude, login, servidor nem instalar nada** — abre por duplo clique em qualquer navegador. É a entrega **pro PO** (revisão da idealização), diferente da `px-setup` Passo 4, que é a entrega **pro dev**.
+Esta skill é sobre **formato de entrega externa**, não sobre construção. Quem constrói (o PX/UX) sempre usa o Vite no localhost — é lá que o `px-proto` rodou, é lá que as telas vivem. O `px-preview` responde uma pergunta: *como levar essas telas para o PO ou stakeholder que não tem acesso ao sandbox?*
+
+Três formatos possíveis, dependendo do projeto e do contexto:
+
+| Formato | Quando usar |
+|---|---|
+| **HTML standalone** (arquivo único, duplo clique) | PO sem acesso a URL; envio por e-mail/Drive/Teams; revisão offline |
+| **Deploy em Netlify/Vercel** | PO prefere uma URL; link permanente para múltiplas revisões; equipe distribuída |
+| **Artifact do claude.ai** | Revisão pontual via link; sem necessidade de domínio próprio; share rápido |
+
+A skill detecta a stack do projeto para saber qual caminho técnico é viável, e pergunta o contexto de entrega para recomendar o formato certo.
 
 **Público desta skill:** o líder UX/PX. Seja direto: pergunte só o que muda a decisão, execute o resto. Nunca peça pra ele digitar comando na mão.
 
-**Por que funciona:** nesta fase o app roda com **dados mockados em memória** (sem back-end). Logo, ele consegue rodar 100% no navegador — basta tirar qualquer SSR do caminho e inlinar tudo num arquivo só.
+**Por que funciona:** nesta fase o app roda com **dados mockados em memória** (sem back-end). Logo, ele consegue rodar 100% no navegador — basta tirar qualquer SSR do caminho e inlinar tudo num arquivo só (ou fazer deploy estático).
 
-Contexto inicial via slash: `$ARGUMENTS` (nome do projeto, ou "link" se já quiser publicar). Se vazio, siga o Passo 0.
+Contexto inicial via slash: `$ARGUMENTS` (nome do projeto, formato desejado, ou vazio). Se vazio, siga o Passo 0.
 
 ## Prompting
 
-Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões enumeráveis (arquivo × link; stack detectada); livre pra nome do projeto. Toda pergunta traz o porquê + default recomendado; eco antes de executar.
+Segue `Skill Prompting Conventions` do `CLAUDE.md`. Estruturada pra decisões enumeráveis (formato de entrega, stack detectada); livre pra nome do projeto e URL de deploy. Toda pergunta traz o porquê + default recomendado; eco antes de executar.
 
-## Passo 0 — Pré-condições (checar em silêncio, só falar se falhar)
+## Passo 0 — Decidir o formato de entrega
 
-O empacotamento só é possível se:
+Pergunte (`AskUserQuestion`) — porque o caminho técnico muda completamente:
 
-1. **Sem back-end real** — os dados são mock/fixtures em memória (padrão desta fase). Se a tela depende de API real que não está mockada, o arquivo abre mas fica vazio/quebrado. Se for o caso, **pare e avise**: precisa mockar a fronteira antes.
+**"Como o PO/stakeholder vai acessar a revisão?"**
+- **Arquivo HTML (Recomendado se envio por e-mail/Drive)** — abre por duplo clique, sem instalar nada. Vai para o Passo 2 (build standalone).
+- **URL pública (Netlify/Vercel)** — link permanente, acesso de qualquer dispositivo. Vai para deploy estático.
+- **Link do claude.ai (Artifact)** — share rápido via URL privada do claude.ai. Vai para o Passo 6.
+
+Se o contexto já estiver claro em `$ARGUMENTS` (ex: "link", "netlify", "html"), não pergunte — infira e eco.
+
+## Passo 0b — Pré-condições técnicas (checar em silêncio, só falar se falhar)
+
+1. **Sem back-end real** — os dados são mock/fixtures em memória (padrão desta fase). Se a tela depende de API real que não está mockada, o arquivo abre mas fica vazio/quebrado. **Pare e avise** se for o caso.
 2. **Rotas resolvíveis no cliente** — nada que dependa do servidor pra montar a página.
 
-Se ambas ok, siga.
+Se ambas ok, siga para o Passo 1 (detectar stack) e então o caminho do formato escolhido no Passo 0.
 
 ## Passo 1 — Detectar a stack (define TODO o caminho)
 
@@ -73,12 +92,19 @@ Não force o mesmo caminho. Explique que essa stack precisa de export estático 
 
 Antes de entregar, sirva o arquivo e confira: renderiza? console sem erros? navegação (incl. abrir uma tela/rota) funciona? Se algo quebrar, diagnostique e corrija antes de mandar. **Nunca entregue sem ter aberto.**
 
-## Passo 6 — Entregar: arquivo ou link?
+## Passo 6 — Entregar no formato escolhido no Passo 0
 
-Pergunte (`AskUserQuestion`), porque muda a entrega:
+**Arquivo `.html` standalone:**
+Copie para um nome apresentável (ex: `release/<Projeto>-Preview.html`) e instrua o PX a enviar por e-mail/Drive/Teams. O PO abre por duplo clique. Independe de conta ou servidor.
 
-- **Arquivo `.html` (default recomendado)** → copie pra um nome apresentável (ex: `release/<Projeto>-Prototipo.html`) e diga pro UX enviar por e-mail/Drive/Teams. O PO abre por duplo clique. Independe de qualquer conta.
-- **Link** → publique como **Artifact do claude.ai** (Tool `Artifact`). Precisa da versão **content-only** (o Artifact envelopa em `<html><head><body>`): gere um HTML só com `<style>` + `#app` + `<script type="module">` (ver `scripts/make-artifact.mjs` do Agility: build `INLINE=0` → concatena o CSS + JS escapando `</script>`). Devolva a URL. Lembre que o Artifact é privado até o UX compartilhar pelo menu da página.
+**Deploy em Netlify (URL pública):**
+1. Confirme que o build standalone foi gerado em `dist-standalone/`
+2. `npm install -g netlify-cli` (se não tiver)
+3. `netlify deploy --dir dist-standalone --prod` — gera uma URL pública permanente
+4. Devolva a URL. O PO acessa de qualquer dispositivo, sem instalar nada.
+
+**Artifact do claude.ai (link rápido):**
+Precisa da versão **content-only** (o Artifact envelopa em `<html><head><body>`): gere um HTML só com `<style>` + `#app` + `<script type="module">`. Devolva a URL do Artifact. Lembre que é privado até o PX compartilhar pelo menu da página.
 
 ## Eco final
 
