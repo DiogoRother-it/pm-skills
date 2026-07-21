@@ -713,45 +713,45 @@ Botão "Confirmar plano" com `sendPrompt`.
 
 ## ARTIFACT: output-final
 
-Documento completo do Kit GTM — Grupo 1 (A0–A5) prontos para uso.
+Documento completo do Kit GTM, Grupo 1 (A0 a A5) prontos para uso.
 
-**Cabeçalho:** nome do produto, data, vínculo CITSmart, badge "pm-gtm · Kit GTM — Grupo 1 completo · A0–A5"
+**Cabeçalho:** nome do produto, data, vínculo CITSmart, badge "pm-gtm · Kit GTM · Grupo 1 completo · A0 a A5"
 
-**Seção A0 — ICP e Mensagem Central:**
+**Seção A0: ICP e Mensagem Central**
 - Canvas completo do ICP (todas as dimensões com badge FATO/PREMISSA)
 - Anti-cliente
 - Sumário de premissas A0
 
-**Seção A1 — Posicionamento e Pitch:**
+**Seção A1: Posicionamento e Pitch**
 - Frase de posicionamento completa (destaque tipográfico)
 - O que é / o que não é
 - 3 pilares de venda com provas e badges
 - Sumário de premissas A1
 
-**Seção A2 — Matriz de Oferta, Precificação e Objeções:**
+**Seção A2: Matriz de Oferta, Precificação e Objeções**
 - Tabela de tiers com preços e lógica de valor
 - Faixa de desconto autorizada e condições
 - Tabela de 5 objeções + respostas + responsáveis
 - Sumário de premissas A2
 
-**Seção A3 — Canal e Distribuição:**
+**Seção A3: Canal e Distribuição**
 - Canal primário + critério de qualificação de lead
 - Mecanismo de descoberta (top of funnel)
 - Sumário de premissas A3
 
-**Seção A4 — Capacitação Comercial:**
+**Seção A4: Capacitação Comercial**
 - 5 bullets essenciais para o vendedor
 - Roteiro de descoberta (3 perguntas + interpretação)
 - Critério de deal qualificado / deal perdido
 - Materiais disponíveis vs. a criar (com responsáveis)
 
-**Seção A5 — Plano de Lançamento:**
+**Seção A5: Plano de Lançamento**
 - Data alvo + âncora
 - Marcos com responsáveis e status
 - Critério go/no-go
 - Plano de contingência
 
-**Rodapé — Critério de Lançamento:**
+**Rodapé: Critério de Lançamento**
 - Lista consolidada de todas as **PREMISSAS** que precisam virar FATO antes do lançamento
 - Responsável por cada validação
 - Status geral: PRONTO PARA LANÇAR / PRONTO COM RESSALVAS / AGUARDAR VALIDAÇÃO
@@ -761,7 +761,7 @@ Documento completo do Kit GTM — Grupo 1 (A0–A5) prontos para uso.
 **Ações:**
 - Botão "Copiar A0" / "Copiar A1" / "Copiar A2" / "Copiar A3" / "Copiar A4" / "Copiar A5"
 - Botão "Copiar Kit completo como markdown"
-- Botão "Gerar documentos GTM (.docx)" com `sendPrompt("Kit GTM aprovado. Gerar documentos Word A0–A5 preenchidos com o conteúdo da sessão.")` — aciona a Fase 9 acima
-- Botão "Baixar templates em branco" — exibe os 6 links de download do repositório (fallback para quem não está no Claude Code)
-- Botão "Iniciar retrospectiva pós-lançamento" com `sendPrompt("Kit GTM Grupo 1 concluído. Iniciando retrospectiva de produto após o lançamento.")` — aparece após lançamento
-- Nota: "Grupo 2 (A6–A9 — Tração) disponível após os primeiros resultados de lançamento."
+- Botão "Gerar documentos GTM (.docx)" com `sendPrompt("Kit GTM aprovado. Gerar documentos Word A0 a A5 preenchidos com o conteúdo da sessão.")`, aciona a Fase 9 acima
+- Botão "Baixar templates em branco": exibe os 6 links de download do repositório (fallback para quem não está no Claude Code)
+- Botão "Iniciar retrospectiva pós-lançamento" com `sendPrompt("Kit GTM Grupo 1 concluído. Iniciando retrospectiva de produto após o lançamento.")`, aparece após lançamento
+- Nota: "Grupo 2 (A6 a A9: Tração) disponível após os primeiros resultados de lançamento."

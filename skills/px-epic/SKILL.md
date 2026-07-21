@@ -156,7 +156,7 @@ planning/<iniciativa>/epics/NN-<nome-do-epico>/
 **Formato de cada história** (seguir exatamente):
 
 ```markdown
-## [ID] — [Título]
+## [ID]: [Título]
 
 **Módulo:** [Produto] · `[módulo]` · [Contexto/tela]
 **Papel:** [papel do usuário]
