@@ -223,6 +223,7 @@ Card de decisão formal com a classificação GO / GO COM RESSALVAS / NoGo e o c
 
 **Ações:**
 - Botão "Copiar como markdown" — copia o registro de decisão para colar no Notion/Confluence.
+- Se GO ou GO COM RESSALVAS: bloco de aviso destacado (borda âmbar, ícone `warning`) com texto: **"Ação obrigatória — criar projeto no Agility antes de avançar.** O Agility é o sistema de gestão de projetos da empresa. Toda iniciativa com decisão GO precisa de um projeto criado lá para priorização do roadmap, alocação de time e rastreabilidade. Faça isso antes de iniciar o PRD." — sem botão (ação manual do PM).
 - Se GO ou GO COM RESSALVAS: botão "Avançar para PRD" com `sendPrompt("Viabilidade confirmada. Iniciando pm-prd para a iniciativa: [nome].")`.
 - Se NoGo: botão "Registrar e encerrar ciclo" com `sendPrompt("Decisão NoGo registrada para [nome]. Iniciativa pausada com contexto documentado.")`.
 
@@ -251,5 +252,6 @@ Documento completo de viabilidade, consolidando todas as fases em um registro de
 
 **Ações:**
 - Botão "Copiar como markdown" — exporta o documento completo.
+- Se GO ou GO COM RESSALVAS: bloco de aviso obrigatório destacado (fundo âmbar escuro, ícone `warning`, borda âmbar) com título **"Ação obrigatória antes de avançar"** e texto: "Crie o projeto no **Agility** (sistema de gestão de projetos da empresa). Isso é necessário para priorização do roadmap, alocação de time e rastreabilidade da iniciativa. Não avance para o PRD sem o projeto criado." — sem botão, ação manual do PM.
 - Se GO ou GO COM RESSALVAS: botão "Iniciar PRD" com `sendPrompt("Gate de viabilidade aprovado. Iniciando pm-prd para [nome da iniciativa].")`.
 - Se NoGo: botão "Encerrar e documentar" com `sendPrompt("Gate de viabilidade: NoGo para [nome da iniciativa]. Decisão documentada para referência futura.")`.
