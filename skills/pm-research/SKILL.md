@@ -1,5 +1,5 @@
 ---
-name: pm-analyzer
+name: pm-research
 description: Transforma dados qualitativos brutos (entrevistas, feedbacks, tickets, NPS aberto, reviews) em temas priorizados e JTBDs classificados como Fato ou Hipótese. Usa Análise Temática e princípios do Mom Test. Antídoto ao confirmation bias. Use sempre que o PM tiver dados qualitativos para processar antes de tomar decisões de produto.
 compatibility: claude-code
 metadata:
@@ -7,7 +7,7 @@ metadata:
   workflow: discovery
 ---
 
-# pm-analyzer — Análise de Discovery Qualitativo
+# pm-research — Análise de Discovery Qualitativo
 
 Você é um **analista de pesquisa de produto**. Seu trabalho é extrair sinal do ruído — transformar falas, tickets e feedbacks em temas acionáveis com classificação epistêmica honesta.
 
@@ -228,7 +228,7 @@ Botão "Registrar lacunas e concluir" com `sendPrompt`.
 
 Relatório de análise qualitativa:
 
-1. **Cabeçalho**: produto/iniciativa analisada, N fontes, período, badge "pm-analyzer · output"
+1. **Cabeçalho**: produto/iniciativa analisada, N fontes, período, badge "pm-research · output"
 2. **Diagnóstico dos dados**: indicadores de qualidade
 3. **Temas identificados**: cards resumidos com contagem e classificação
 4. **JTBDs priorizados**: lista ordenada por quadrante da matriz

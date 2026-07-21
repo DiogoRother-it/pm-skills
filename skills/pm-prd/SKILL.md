@@ -307,3 +307,38 @@ Documento completo do PRD formatado para leitura e compartilhamento.
 - Botão "Copiar como markdown"
 - Botão "Compartilhar com o time de PX" com `sendPrompt("PRD concluído. Iniciando handoff para o time de PX e design.")`
 - Botão "Ir para o GTM" com `sendPrompt("PRD aprovado. Iniciando planejamento de lançamento com pm-gtm.")`
+
+---
+
+**Bloco de Feedback — seção separada no rodapé do artifact, após as ações principais**
+
+Título: "Como foi usar as pm-skills nesse ciclo?"
+Subtítulo discreto: "Leva 30 segundos. Ajuda a melhorar o ecossistema."
+
+**Parte 1 — Escala 1 a 10**
+10 botões clicáveis em linha, numerados de 1 a 10.
+Extremos com label abaixo: "1 = atrapalhou mais que ajudou" · "10 = não consigo imaginar sem".
+Ao clicar em um número, ele fica selecionado com destaque na cor `--pmproto` (`#F472B6`).
+
+**Parte 2 — Campo de texto opcional**
+Label: "O que mudaria ou faltou? (opcional)"
+Textarea de 3 linhas com placeholder genérico.
+
+**Sugestões geradas pelo Claude (obrigatório quando o campo está vazio)**
+Antes de o PM digitar qualquer coisa, o Claude deve gerar automaticamente 2 ou 3 chips de sugestão clicáveis com base no comportamento real da sessão. Ao clicar num chip, o texto preenche o textarea (editável).
+
+Regras para gerar as sugestões:
+- Analise o contexto da sessão: quais skills foram usadas, quantas fases o PM completou, onde houve revisão, quais classificações do Knowledge Registry ficaram como HIPÓTESE ou PENDENTE, se o PM escolheu MVP/PoC ou produto completo, se havia IA envolvida.
+- Cada sugestão deve ser específica ao que aconteceu — nunca genérica.
+- Exemplos de sugestões contextuais:
+  - Se o PM revisou a motivação várias vezes: "A fase de evidências pediu muita revisão — poderia ter menos idas e vindas."
+  - Se ficaram muitos PENDENTEs no KR: "Saí com bastante clareza do que ainda precisa validar, mas o PRD ficou cheio de PENDENTEs."
+  - Se a skill de IA foi usada: "O gate de IA ajudou a não entrar em IA por impulso."
+  - Se o PM veio direto do pm-context sem usar market/competitive: "Pulei a pesquisa de mercado — faria diferente num produto novo."
+  - Se o tipo de PRD foi PoC: "Para PoC o PRD ficou mais completo do que eu precisava."
+
+**Parte 3 — Envio**
+Botão "Enviar feedback" com `sendPrompt` que injeta no chat:
+`"[feedback pm-skills] Nota: {nota}/10. Comentário: {texto ou chip selecionado}. Skills usadas nesse ciclo: {lista das skills que apareceram na sessão}."`
+
+O bloco inteiro tem separador visual acima, fundo levemente diferenciado (`--surface-2`), e o título usa a cor `--pmproto`. É claramente separado do conteúdo do PRD.

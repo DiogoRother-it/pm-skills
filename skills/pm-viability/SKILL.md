@@ -1,6 +1,6 @@
 ---
 name: pm-viability
-description: Conduz o PM pelo gate explícito de Go/NoGo antes do PRD — força uma avaliação honesta de viabilidade em quatro dimensões (desejabilidade, técnica, negócio, estratégia), expõe premissas ocultas, quantifica o risco crítico e documenta a decisão de forma defensável. Use após pm-analyzer ou pm-architecture, antes de pm-prd. Este é o único momento do fluxo dedicado a perguntar "vale a pena continuar?"
+description: Conduz o PM pelo gate explícito de Go/NoGo antes do PRD — força uma avaliação honesta de viabilidade em quatro dimensões (desejabilidade, técnica, negócio, estratégia), expõe premissas ocultas, quantifica o risco crítico e documenta a decisão de forma defensável. Use após pm-research ou pm-architecture, antes de pm-prd. Este é o único momento do fluxo dedicado a perguntar "vale a pena continuar?"
 compatibility: claude-code
 metadata:
   audience: pm-po
