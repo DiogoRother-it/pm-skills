@@ -1,15 +1,14 @@
 {
-  "name": "@centralit/px-skills",
-  "version": "1.4.2",
-  "description": "Cadeia de skills PX/UX da Central IT + docs de design system (instalador). Instala as skills negociais e suas dependências num repo de produto.",
+  "name": "@centralit/pm-skills",
+  "version": "2.0.0",
+  "description": "Cadeia de skills de Product Management da Central IT para Claude Code. Instala as 21 skills PM (pm-context → pm-update) no repo do produto.",
   "type": "module",
   "bin": {
-    "px-skills": "./install.mjs"
+    "pm-skills": "./install.mjs"
   },
   "files": [
     "install.mjs",
-    "skills",
-    "assets"
+    "skills"
   ],
   "engines": {
     "node": ">=18"

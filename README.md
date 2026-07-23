@@ -1,61 +1,36 @@
-# @centralit/px-skills
+# @centralit/pm-skills
 
-Instalador da **cadeia de skills PX/UX** da Central IT + os **docs de design system** que elas
-referenciam. Feito para o **PX instalar as skills no repo do produto** (a base que o dev entrega
-traz só a stack de componentes; as skills não vêm com ela).
+Cadeia de skills de **Product Management** da Central IT para **Claude Code**. Feito para o
+**PM instalar as skills no repo do produto** e conduzir a iniciativa direto pelo menu `/`.
 
 ## O que instala
 
-- **11 skills** em `.claude/skills/`: `px-setup`, `px-start`, `px-audit`, `px-intake`, `px-kickoff`, `px-epic`, `px-proto`, `px-request`, `px-story`, `px-handoff`, `px-preview`
-- **Docs de design system** em `docs/design-system/` (foundations, components, patterns, engineering)
-- **Protocolo** em `docs/px-protocol.md` (Protocolo de Interação UX + Skill Prompting Conventions)
-- Um ponteiro pro protocolo no `CLAUDE.md` do repo (cria se não existir)
+- **22 skills PM** em `.claude/skills/`: `pm-context`, `pm-discovery`, `pm-market`, `pm-competitive`,
+  `pm-research`, `pm-strategy`, `pm-objective`, `pm-proto`, `pm-viability`, `pm-ai-gate`,
+  `pm-ai-approach`, `pm-ai-evals`, `pm-architecture`, `pm-prd`, `pm-gtm`, `pm-roadmap`, `pm-brief`,
+  `pm-heritage`, `pm-retrospective`, `pm-stakeholder`, `pm-sunset`, `pm-update`
+- Um ponteiro no `CLAUDE.md` do repo apontando `pm-context` como portão de entrada (cria se não existir)
 
-O pacote é **autossuficiente**: leva as skills e suas dependências de documentação juntas, então
-não quebra se rodado num repo que ainda não tem o design system.
+As skills são **autossuficientes** — não dependem de docs externos, protocolo ou biblioteca de UI.
 
 ## Como instalar
 
 Rode **dentro do repositório do produto** (o diretório atual vira o destino):
 
 ```bash
-# direto do GitHub (sem publicar no npm)
-npx github:DiogoRother-it/px-skills
-
-# ou, após publicar no npm
-npx @centralit/px-skills
+npx github:DiogoRother-it/pm-skills
 ```
 
-Depois, abra o Claude Code nesse repo — as skills aparecem no menu `/`:
-`/px-setup · /px-start · /px-audit · /px-intake · /px-kickoff · /px-epic · /px-proto · /px-request · /px-story · /px-handoff · /px-preview`
+Depois, abra o Claude Code nesse repo e comece por **`/pm-context`** — a skill roteadora que
+classifica o contexto da iniciativa e decide qual skill PM rodar a seguir.
 
-## Pré-requisito
+## Ponto de entrada
 
-A **biblioteca de componentes** (`src/components/ui/` + tokens em `src/index.css`) precisa estar
-no repo para o trabalho de UI. Ela vem no **bundle do design system** entregue ao dev, não neste
-pacote — este aqui é só a camada de skills + protocolo, para o PX.
+Toda iniciativa começa por **`/pm-context`**. Ele é obrigatório: identifica tipo de produto,
+histórico, documentação existente e estratégia, e encaminha para a próxima skill da cadeia.
+Nunca pule esse portão.
 
-## Duas portas de entrada
+## Manutenção
 
-- **Projeto novo do zero** → comece por `/px-start`
-- **Redesign de produto existente** → comece por `/px-audit` (analisa repo/URL ao vivo ou prints/PDF)
-
-O **alvo de build** (decidido no `px-start`/`px-intake`/`px-kickoff`) escolhe o caminho de idealização: **app React do produto** (a partir do boilerplate) ou **protótipo HTML descartável** via `/px-proto` (stack própria só-CDN, valida o fluxo sem tocar no produto).
-
-## Manutenção — canonicidade dividida (não inverter a direção)
-
-Este pacote e o `centralit-boilerplate` são **acoplados**, mas cada um é canônico pra uma coisa:
-
-| Conteúdo | Fonte da verdade | Cópia |
-|---|---|---|
-| **Skills** (`skills/`) | **px-skills** (aqui) | boilerplate `docs/skills-draft/<skill>/` |
-| **Protocolo** (`assets/px-protocol.md`) | **px-skills** (aqui) | boilerplate `docs/px-protocol.md` |
-| **Docs de design-system** (`assets/design-system/`) | **centralit-boilerplate** (regras de uso de componente) | aqui, em `assets/design-system/` |
-
-O boilerplate é a **biblioteca de componentes + regras de uso**; o px-skills é a **biblioteca de habilidades do UX**. Algumas skills (ex: `px-request`) **absorvem** as regras de uso que vivem no boilerplate — por isso uma regra de componente nova nasce **no boilerplate** e a skill reflete.
-
-**Fluxo de edição:**
-- **Regra de componente** → edite no **boilerplate** (`docs/design-system/`) → propague a cópia pra cá (`assets/design-system/`).
-- **Skill ou protocolo** → edite **aqui** (`skills/`, `assets/px-protocol.md`) → propague pro boilerplate (`docs/skills-draft/`, `docs/px-protocol.md`).
-
-Ao sincronizar pro boilerplate, **nunca** `git add -A` (o working tree de lá costuma ter WIP do time) — stageie só os caminhos que você mudou. Suba a versão em `package.json` a cada evolução de skills.
+- **Fonte da verdade das skills**: este repositório (`skills/pm-*/`).
+- Suba a versão em `package.json` a cada evolução relevante da cadeia.

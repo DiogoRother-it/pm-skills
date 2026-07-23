@@ -1,2 +1,7 @@
 node_modules/
 .DS_Store
+
+# Rascunhos e materiais de trabalho (não fazem parte do pacote)
+pm-skills md/
+pm-skills md.zip
+INSTRUCOES-PROJECT.md
